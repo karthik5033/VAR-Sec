@@ -1,0 +1,395 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        :root {
+            --bg: #09090b;
+            --surface: #18181b;
+            --border: #27272a;
+            --text-primary: #f4f4f5;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #71717a;
+            --accent: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        
+        body {
+            width: 360px;
+            min-height: 400px;
+            background-color: var(--bg);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            overflow-y: hidden; /* Prevent vertical scrollbar */
+        }
+        
+        /* Minimalist Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .brand-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            mask: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L3 7V12C3 17.52 6.84 22.74 12 24C17.16 22.74 21 17.52 21 12V7L12 2Z" fill="black"/></svg>') no-repeat center;
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L3 7V12C3 17.52 6.84 22.74 12 24C17.16 22.74 21 17.52 21 12V7L12 2Z" fill="black"/></svg>') no-repeat center;
+        }
+        
+        .brand-name {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: var(--text-primary);
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .action-btn {
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: color 0.2s;
+            font-size: 14px;
+        }
+        
+        .action-btn:hover {
+            color: var(--text-primary);
+        }
+
+        /* Status & Controls */
+        .dashboard {
+            padding: 24px;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .status-indicator {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .status-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-tertiary);
+            font-weight: 600;
+        }
+
+        .status-value {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--text-tertiary); /* Default off */
+            border-radius: 50%;
+        }
+
+        .dot.active {
+            background-color: var(--text-primary);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Toggle Switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: var(--border);
+            border-radius: 99px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.on {
+            background: var(--text-primary);
+        }
+
+        .toggle-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: var(--bg);
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .toggle-switch.on .toggle-thumb {
+            transform: translateX(20px);
+        }
+
+        /* Stats Grid */
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.5px;
+        }
+
+        /* Activity Feed */
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .feed-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .feed-action {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .feed-action:hover {
+            color: var(--text-primary);
+            text-decoration: underline;
+        }
+
+        .feed-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .feed-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .feed-item:hover {
+            background: var(--surface);
+            border-color: var(--border);
+        }
+
+        .feed-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .risk-indicator {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--text-tertiary);
+        }
+
+        .risk-indicator.high {
+            width: 6px;
+            height: 6px;
+            background: var(--text-primary);
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+
+        .url-text {
+            font-size: 13px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .meta-text {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            font-family: monospace;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 24px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            border: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: var(--text-primary);
+            color: var(--bg);
+            border-color: var(--text-primary);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--surface);
+            color: var(--text-primary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            padding: 32px 0;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 12px;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="brand">
+            <div class="brand-icon"></div>
+            <span class="brand-name">FIFA Threat Intel</span>
+        </div>
+        <div class="header-actions">
+            <span class="action-btn" id="refreshBtn" title="Refresh">⟳</span>
+            <span class="action-btn" title="Settings">⚙</span>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <!-- Status Section -->
+        <div class="status-row">
+            <div class="status-indicator">
+                <span class="status-label">System Status</span>
+                <span class="status-value">
+                    <span class="dot active"></span>
+                    <span id="systemStatus">Active</span>
+                </span>
+            </div>
+            
+            <div class="toggle-container">
+                <span class="status-label">Protection</span>
+                <div class="toggle-switch on" id="protectionToggle">
+                    <div class="toggle-thumb"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <span class="stat-label">Scans Processed</span>
+                <span class="stat-number" id="scansToday">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Threats Mitigated</span>
+                <span class="stat-number" id="threatsBlocked">0</span>
+            </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="feed-header">
+            <span class="feed-title">Recent Interceptions</span>
+            <span class="feed-action" id="clearHistoryBtn">Clear History</span>
+        </div>
+        
+        <div class="feed-list" id="activityList">
+            <div class="empty-state">No recent activity recorded</div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div class="footer">
+            <button class="btn btn-secondary" id="scanBtn">Scan Page</button>
+            <button class="btn btn-primary" id="openDashboard">Dashboard ↗</button>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

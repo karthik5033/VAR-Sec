@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+scikit-learn
+joblib
+numpy
+sqlalchemy
+pydantic
+google-generativeai
+python-dotenv
+tldextract
+lightgbm
+whoisdomain
+cryptography
+playwright
+Pillow
+ImageHash
