@@ -33,8 +33,8 @@ export function AiChatWidget() {
   // Initial greeting
   useEffect(() => {
     if (messages.length === 0) {
-        setMessages([{ role: "assistant", content: "Sentinel Protocol v2.0 initialized. Awaiting queries." }]);
-        setSuggestions(["Analyze current page security", "Explain Zero-Trust Architecture", "What is Neural Detection?"]);
+        setMessages([{ role: "assistant", content: "VAR-Sec Intelligence v1.0 initialized. Awaiting queries." }]);
+        setSuggestions(["Analyze a suspicious FIFA ticket URL", "How does visual similarity detection work?", "Show active threat campaigns"]);
     }
   }, []);
 

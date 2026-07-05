@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Rocket, ChevronRight, ShieldCheck } from "lucide-react";
@@ -98,7 +97,7 @@ export default function HeroSection() {
                                 <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-emerald-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                             </span>
-                            <span className="text-xs font-semibold text-zinc-600 group-hover:text-zinc-900">FIFA Threat Intel Online</span>
+                            <span className="text-xs font-semibold text-zinc-600 group-hover:text-zinc-900">VAR-Sec Online</span>
                             <ArrowRight className="size-3.5 text-zinc-400 group-hover:text-emerald-500 transition-colors" />
                         </Link>
                     </motion.div>
@@ -110,7 +109,7 @@ export default function HeroSection() {
                         transition={{ duration: 0.6, delay: 0.1 }}
                         className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-zinc-900 leading-[0.95]"
                     >
-                        FIFA <span className="text-zinc-300">Threat</span> <br className="hidden md:block"/>
+                        VAR<span className="text-zinc-300">-</span>Sec <br className="hidden md:block"/>
                         <span className="text-transparent bg-clip-text bg-gradient-to-br from-emerald-600 to-zinc-900">
                             Intelligence.
                         </span>
@@ -123,8 +122,8 @@ export default function HeroSection() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="mx-auto mt-8 max-w-2xl text-xl text-zinc-500 font-light leading-relaxed"
                     >
-                        Stop sophisticated ticketing scams and piracy streams before they strike. <br className="hidden sm:block"/>
-                        Your autonomous defense layer for the FIFA ecosystem.
+                        The digital VAR for the FIFA ecosystem. Reviewing threats in real-time. <br className="hidden sm:block"/>
+                        Giving scammers the red card.
                     </motion.p>
 
                     {/* CTA Buttons */}

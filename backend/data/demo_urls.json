@@ -1,0 +1,62 @@
+[
+  {
+    "url": "https://fifatickets-official.xyz/buy-now",
+    "expected": "HIGH",
+    "description": "Fake FIFA ticketing site on .xyz TLD"
+  },
+  {
+    "url": "https://worldcup-stream-free.click/live",
+    "expected": "HIGH",
+    "description": "Illegal streaming site with suspicious TLD"
+  },
+  {
+    "url": "https://login-fifa-secure.net/verify-account",
+    "expected": "HIGH",
+    "description": "Phishing page impersonating FIFA login"
+  },
+  {
+    "url": "https://fifa-promo-2025.com/giveaway",
+    "expected": "HIGH",
+    "description": "Fake FIFA giveaway scam"
+  },
+  {
+    "url": "https://discount-fifatickets.shop/flash-sale",
+    "expected": "HIGH",
+    "description": "Fake ticket discount shop"
+  },
+  {
+    "url": "https://fifacoin-launch.io/presale",
+    "expected": "HIGH",
+    "description": "Crypto scam exploiting FIFA branding"
+  },
+  {
+    "url": "https://premium-sports-iptv.xyz/fifa",
+    "expected": "HIGH",
+    "description": "Illegal IPTV service"
+  },
+  {
+    "url": "https://fifa.com",
+    "expected": "LOW",
+    "description": "Official FIFA website (should be safe)"
+  },
+  {
+    "url": "https://tickets.fifa.com",
+    "expected": "LOW",
+    "description": "Official FIFA ticketing (should be safe)"
+  },
+  {
+    "url": "https://fifaplus.com",
+    "expected": "LOW",
+    "description": "Official FIFA Plus (should be safe)"
+  },
+  {
+    "url": "https://google.com",
+    "expected": "LOW",
+    "description": "Major search engine (should be safe)"
+  },
+  {
+    "url": "https://fifastream-4k.apk.download",
+    "expected": "HIGH",
+    "description": "Malware APK download disguised as FIFA streaming app"
+  }
+]

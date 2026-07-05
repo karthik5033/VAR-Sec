@@ -2,6 +2,7 @@
 .env
 .env.*
 .env.local
+!.env.example
 .venv
 venv/
 ENV/
@@ -13,7 +14,6 @@ __pycache__/
 *$py.class
 *.sqlite3
 *.db
-backend/sql_app.db
 *.sqlite
 
 # Node
@@ -25,6 +25,7 @@ yarn-error.log
 .next/
 out/
 build/
+tsconfig.tsbuildinfo
 
 # OS
 .DS_Store
@@ -33,3 +34,7 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# Large data files
+*.mmdb
+backend/data/GeoLite2-City.mmdb

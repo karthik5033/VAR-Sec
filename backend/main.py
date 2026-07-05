@@ -30,9 +30,9 @@ from app.services.osint_service import ingest_osint_post
 from app.services.campaign_clustering import cluster_campaigns
 
 app = FastAPI(
-    title="SecureSentinel API",
-    description="Real-time Phishing Detection using Sklearn (Reverted)",
-    version="4.0.0", 
+    title="VAR-Sec API",
+    description="FIFA Threat Intelligence Platform — Visual Analysis & Reconnaissance Security",
+    version="1.0.0", 
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -63,7 +63,6 @@ TRUSTED_DOMAINS = {
     'paypal.com',
     'chase.com','wellsfargo.com','bankofamerica.com','citibank.com',
     'spotify.com',
-    'github.com',
     'twitch.tv',
     'discord.com',
     'adobe.com',
@@ -86,6 +85,9 @@ TRUSTED_DOMAINS = {
     'zoom.us','slack.com','notion.so','figma.com',
     'cloudflare.com','aws.amazon.com',
     'yahoo.com','bing.com','duckduckgo.com',
+    # FIFA Official Domains (never flag these)
+    'fifa.com','tickets.fifa.com','fifaplus.com','fifa.gg',
+    'inside.fifa.com','www.fifa.com',
 }
 
 # ===========================
@@ -436,7 +438,12 @@ async def detect_phishing(request: Request, db: Session = Depends(get_db), servi
         "apktodo", "liteapks", "modyolo", "modlite", "happymod",
         "an1.com", "rexdl", "revdl", "apkmody", "apkcombo", "apkdone",
         # Internships / Jobs (Generic risk terms only)
-        "job-vacancy", "freshers"  # Removed legitimate portals like Indeed, Naukri, SkillIndia to prevent FPs
+        "job-vacancy", "freshers",  # Removed legitimate portals like Indeed, Naukri, SkillIndia to prevent FPs
+        # FIFA-Specific Scam Keywords (VAR-Sec)
+        "fifa-ticket-free", "worldcup-stream", "fifa-giveaway", "clubworldcup-free",
+        "fifaworldcup2026", "free-match-hd", "fifa-free-tickets", "worldcup-tickets-cheap",
+        "fifa-lottery", "fifa-prize", "free-worldcup", "fifa-credential",
+        "fifa-login-verify", "fifaticket-resale-free", "worldcup-livestream",
     ]
     
     url_lower = url.lower()
@@ -475,7 +482,11 @@ async def detect_phishing(request: Request, db: Session = Depends(get_db), servi
         # AI / Deepfake (Ethical Risk)
         "deepfake", "face-swap", "undress-ai", "nudify",
         # Generic Spam
-        "click-here", "subscribe-now", "winner-claim"
+        "click-here", "subscribe-now", "winner-claim",
+        # FIFA-Specific Suspicious (VAR-Sec — Yellow Warning)
+        "cheap-fifa-tickets", "fifa-resale", "unofficial-tickets",
+        "live-football-stream", "match-stream-free", "fifa-discount",
+        "worldcup-offer", "football-livestream", "fifa-deals",
     ]
     
     for kw in SUSPICIOUS_KEYWORDS:

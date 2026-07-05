@@ -12,8 +12,8 @@ models.Base.metadata.create_all(bind=engine)
 start_telemetry_engine()
 
 app = FastAPI(
-    title="SecureSentinel API",
-    description="Backend for Phishing Detection & Behavioral Analytics",
+    title="VAR-Sec API",
+    description="FIFA Threat Intelligence Platform — Visual Analysis & Reconnaissance Security",
     version="1.0.0"
 )
 

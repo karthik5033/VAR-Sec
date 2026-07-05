@@ -20,7 +20,7 @@ export const Logo = ({ className }: { className?: string }) => {
         </svg>
         <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10" />
       </div>
-      <span>FIFA Threat Intel</span>
+      <span>VAR-Sec</span>
     </div>
   );
 };

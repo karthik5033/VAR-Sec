@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FIFA Threat Intel",
-  description: "AI-Powered Scam, Fraud & Piracy Detection for the FIFA Ecosystem",
+  title: "VAR-Sec | FIFA Threat Intelligence",
+  description: "Visual Analysis & Reconnaissance Security — AI-Powered Scam, Fraud & Piracy Detection for the FIFA Ecosystem",
 };
 
 export default function RootLayout({

@@ -102,7 +102,7 @@ export default function ThreatMap() {
                     <span className="text-emerald-500">Defense Grid</span>
                 </h2>
                 <p className="text-zinc-400 max-w-sm">
-                    Real-time visualization of neutralized vectors across the decentralized Sentinel mesh network.
+                    Real-time visualization of neutralized threat vectors across the VAR-Sec global defense network.
                 </p>
             </div>
 

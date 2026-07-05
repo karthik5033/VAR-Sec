@@ -4,7 +4,7 @@
  */
 
 const API_BASE = "http://127.0.0.1:8000/api/v1";
-console.log("[FIFA Threat Intel] Service Worker v3.1 - Build: 2025-03-17");
+console.log("[VAR-Sec] Service Worker v3.1 - Build: 2025-03-17");
 
 // Cache for analyzed URLs
 const cache = new Map();
@@ -36,7 +36,7 @@ async function syncBlocklist() {
         
         if (response.ok) {
             const data = await response.json();
-            console.log("[FIFA Threat Intel] 📥 Received blocklist data:", data);
+            console.log("[VAR-Sec] 📥 Received blocklist data:", data);
             
             permanentBlocklist.clear();
             
@@ -44,13 +44,13 @@ async function syncBlocklist() {
                 data.domains.forEach(item => {
                     permanentBlocklist.add(item.domain.toLowerCase().trim()); // Normalize
                 });
-                console.log(`[FIFA Threat Intel] 📋 Synced ${permanentBlocklist.size} permanently blocked domains:`, Array.from(permanentBlocklist));
+                console.log(`[VAR-Sec] 📋 Synced ${permanentBlocklist.size} permanently blocked domains:`, Array.from(permanentBlocklist));
             }
         } else {
-             console.error(`[FIFA Threat Intel] ❌ Blocklist sync failed: ${response.status}`);
+             console.error(`[VAR-Sec] ❌ Blocklist sync failed: ${response.status}`);
         }
     } catch (error) {
-        console.error("[FIFA Threat Intel] ❌ Failed to sync blocklist (Network Error):", error);
+        console.error("[VAR-Sec] ❌ Failed to sync blocklist (Network Error):", error);
     }
 }
 
@@ -62,16 +62,16 @@ function isPermanentlyBlocked(url) {
         const urlObj = new URL(url);
         const domain = urlObj.hostname.toLowerCase(); // Normalize
         
-        console.log(`[FIFA Threat Intel] 🔍 Checking: ${domain} (Blocklist size: ${permanentBlocklist.size})`);
+        console.log(`[VAR-Sec] 🔍 Checking: ${domain} (Blocklist size: ${permanentBlocklist.size})`);
         
         // Debug: Log first 5 items if list is small or debugging
         if (permanentBlocklist.size > 0 && permanentBlocklist.size < 10) {
-             console.log("[FIFA Threat Intel] Blocklist content:", Array.from(permanentBlocklist));
+             console.log("[VAR-Sec] Blocklist content:", Array.from(permanentBlocklist));
         }
 
         // Check exact match
         if (permanentBlocklist.has(domain)) {
-            console.log(`[FIFA Threat Intel] 🚫 EXACT MATCH found for: ${domain}`);
+            console.log(`[VAR-Sec] 🚫 EXACT MATCH found for: ${domain}`);
             return true;
         }
         
@@ -110,18 +110,18 @@ async function checkBackend() {
             cache: "no-cache"
         });
         if (res.ok) {
-            console.log("[FIFA Threat Intel] ✅ Backend online");
+            console.log("[VAR-Sec] ✅ Backend online");
             return true;
         }
     } catch (err) {
-        console.warn("[FIFA Threat Intel] ⚠️ Backend offline - start with: python start_server.py");
+        console.warn("[VAR-Sec] ⚠️ Backend offline - start with: python start_server.py");
     }
     return false;
 }
 
 // Check backend on install/startup
 chrome.runtime.onInstalled.addListener(() => {
-    console.log("[FIFA Threat Intel] Extension installed");
+    console.log("[VAR-Sec] Extension installed");
     checkBackend();
     syncBlocklist(); // Sync blocklist on install
 });
@@ -144,7 +144,7 @@ async function analyzeURL(url, isMainFrame = false) {
     }
 
     try {
-        console.log(`[FIFA Threat Intel] 🚀 Analyzing: ${url.substring(0, 50)}...`);
+        console.log(`[VAR-Sec] 🚀 Analyzing: ${url.substring(0, 50)}...`);
         const response = await fetch(`${API_BASE}/detect-fifa`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -157,7 +157,7 @@ async function analyzeURL(url, isMainFrame = false) {
 
         const data = await response.json();
         data.max_risk_score = data.fusion_score !== undefined ? data.fusion_score : (data.max_risk_score || 0);
-        console.log(`[FIFA Threat Intel] 📉 Result for ${url.substring(0, 30)}: ${Math.round(data.max_risk_score * 100)}%`);
+        console.log(`[VAR-Sec] 📉 Result for ${url.substring(0, 30)}: ${Math.round(data.max_risk_score * 100)}%`);
         
         // Cache result
         cache.set(url, {
@@ -176,7 +176,7 @@ async function analyzeURL(url, isMainFrame = false) {
 
         return data;
     } catch (error) {
-        console.error("[FIFA Threat Intel] API Error:", error.message);
+        console.error("[VAR-Sec] API Error:", error.message);
         // Return safe default on error
         return {
             max_risk_score: 0,
@@ -191,7 +191,7 @@ async function analyzeURL(url, isMainFrame = false) {
  */
 async function analyzeDialog(text, dialogType, url) {
     try {
-        console.log(`[FIFA Threat Intel] 🔔 Analyzing ${dialogType}: ${text.substring(0, 50)}...`);
+        console.log(`[VAR-Sec] 🔔 Analyzing ${dialogType}: ${text.substring(0, 50)}...`);
         
         // Try the new dedicated temporal analysis endpoint first
         try {
@@ -207,7 +207,7 @@ async function analyzeDialog(text, dialogType, url) {
 
             if (temporalResponse.ok) {
                 const temporalData = await temporalResponse.json();
-                console.log(`[FIFA Threat Intel] 📊 Temporal analysis: ${Math.round(temporalData.risk_score * 100)}%, ${temporalData.triggers.length} triggers`);
+                console.log(`[VAR-Sec] 📊 Temporal analysis: ${Math.round(temporalData.risk_score * 100)}%, ${temporalData.triggers.length} triggers`);
                 
                 // Update stats
                 await updateStats(url || 'dialog', temporalData.risk_score, false);
@@ -221,7 +221,7 @@ async function analyzeDialog(text, dialogType, url) {
                 };
             }
         } catch (temporalError) {
-            console.warn("[FIFA Threat Intel] Temporal endpoint failed, falling back to detect:", temporalError.message);
+            console.warn("[VAR-Sec] Temporal endpoint failed, falling back to detect:", temporalError.message);
         }
         
         // Fallback to the old /detect endpoint
@@ -261,7 +261,7 @@ async function analyzeDialog(text, dialogType, url) {
         // Sort by position (temporal order)
         triggers.sort((a, b) => a.position - b.position);
         
-        console.log(`[FIFA Threat Intel] 📊 Dialog analysis (fallback): ${Math.round(data.max_risk_score * 100)}%, ${triggers.length} triggers`);
+        console.log(`[VAR-Sec] 📊 Dialog analysis (fallback): ${Math.round(data.max_risk_score * 100)}%, ${triggers.length} triggers`);
         
         // Update stats
         await updateStats(url || 'dialog', data.max_risk_score, false);
@@ -273,7 +273,7 @@ async function analyzeDialog(text, dialogType, url) {
             dialogType: dialogType
         };
     } catch (error) {
-        console.error("[FIFA Threat Intel] Dialog analysis error:", error.message);
+        console.error("[VAR-Sec] Dialog analysis error:", error.message);
         return {
             riskScore: 0,
             triggers: [],
@@ -331,7 +331,7 @@ async function updateStats(url, riskScore, isMainFrame) {
             recentScans
         });
     } catch (error) {
-        console.error("[FIFA Threat Intel] Stats update failed:", error);
+        console.error("[VAR-Sec] Stats update failed:", error);
     }
 }
 
@@ -359,20 +359,20 @@ chrome.webNavigation.onBeforeNavigate.addListener(async (details) => {
     
     // Check if URL is whitelisted
     if (tempWhitelist.has(url)) {
-        console.log("[FIFA Threat Intel] ✅ Whitelisted:", url);
+        console.log("[VAR-Sec] ✅ Whitelisted:", url);
         return;
     }
     
     // Get settings
     const settings = await getSettings();
     if (!settings.blockingEnabled) {
-        console.log("[FIFA Threat Intel] ⏸️ Blocking disabled");
+        console.log("[VAR-Sec] ⏸️ Blocking disabled");
         return;
     }
     
     // PRIORITY 1: Check permanent blocklist (instant block, no API call needed)
     if (isPermanentlyBlocked(url)) {
-        console.log("[FIFA Threat Intel] 🚫 PERMANENTLY BLOCKED:", url);
+        console.log("[VAR-Sec] 🚫 PERMANENTLY BLOCKED:", url);
         
         // Redirect to blocking page with permanent block indicator
         const blockedPageUrl = chrome.runtime.getURL('blocked.html') +
@@ -388,12 +388,12 @@ chrome.webNavigation.onBeforeNavigate.addListener(async (details) => {
     }
     
     // PRIORITY 2: Analyze URL with AI model
-    console.log("[FIFA Threat Intel] 🔍 Analyzing navigation:", url);
+    console.log("[VAR-Sec] 🔍 Analyzing navigation:", url);
     const analysis = await analyzeURL(url, true);
     
     // Check if should block based on risk score
     if (analysis.max_risk_score >= settings.blockThreshold) {
-        console.log("[FIFA Threat Intel] 🛑 BLOCKING:", url, "Risk:", analysis.max_risk_score);
+        console.log("[VAR-Sec] 🛑 BLOCKING:", url, "Risk:", analysis.max_risk_score);
         
         // Redirect to blocking page
         const blockedPageUrl = chrome.runtime.getURL('blocked.html') +
@@ -403,7 +403,7 @@ chrome.webNavigation.onBeforeNavigate.addListener(async (details) => {
         
         chrome.tabs.update(tabId, { url: blockedPageUrl });
     } else {
-        console.log("[FIFA Threat Intel] ✅ Safe:", url, "Risk:", analysis.max_risk_score);
+        console.log("[VAR-Sec] ✅ Safe:", url, "Risk:", analysis.max_risk_score);
     }
 });
 
@@ -429,21 +429,21 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "WHITELIST_TEMP") {
         // Add URL to temporary whitelist
         tempWhitelist.add(message.url);
-        console.log("[FIFA Threat Intel] ➕ Whitelisted:", message.url);
+        console.log("[VAR-Sec] ➕ Whitelisted:", message.url);
         sendResponse({ success: true });
         return false;
     }
     
     if (message.type === "LOG_BLOCKED") {
         // Log blocked attempt
-        console.log("[FIFA Threat Intel] 📝 Logged block:", message.url);
+        console.log("[VAR-Sec] 📝 Logged block:", message.url);
         sendResponse({ success: true });
         return false;
     }
     
     if (message.type === "REPORT_FALSE_POSITIVE") {
         // Handle false positive report
-        console.log("[FIFA Threat Intel] 📢 False positive reported:", message.url);
+        console.log("[VAR-Sec] 📢 False positive reported:", message.url);
         // Could send to backend for retraining
         sendResponse({ success: true });
         return false;
@@ -452,10 +452,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     
     if (message.type === "SYNC_BLOCKLIST") {
         // Force immediate blocklist sync
-        console.log("[FIFA Threat Intel] 🔄 Force syncing blocklist...");
+        console.log("[VAR-Sec] 🔄 Force syncing blocklist...");
         syncBlocklist()
             .then(() => {
-                console.log("[FIFA Threat Intel] ✅ Blocklist synced. Current size:", permanentBlocklist.size);
+                console.log("[VAR-Sec] ✅ Blocklist synced. Current size:", permanentBlocklist.size);
                 sendResponse({ 
                     success: true, 
                     count: permanentBlocklist.size,
@@ -474,4 +474,4 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 
-console.log("[FIFA Threat Intel] Service Worker ready - Blocking enabled");
+console.log("[VAR-Sec] Service Worker ready - Blocking enabled");

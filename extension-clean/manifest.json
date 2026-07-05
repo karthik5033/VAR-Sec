@@ -1,15 +1,15 @@
-﻿{
+{
   "manifest_version": 3,
-  "name": "FIFA Threat Intel",
-  "version": "3.0.0",
-  "description": "Real-time phishing and social engineering detection with automatic blocking",
+  "name": "VAR-Sec",
+  "version": "1.0.0",
+  "description": "Visual Analysis & Reconnaissance Security — FIFA threat detection with automatic blocking",
   "permissions": [
     "storage",
     "webNavigation",
     "tabs"
   ],
   "host_permissions": [
-    "http://127.0.0.1:8002/*"
+    "http://127.0.0.1:8000/*"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -18,7 +18,7 @@
       "48": "icons/icon48.png",
       "128": "icons/icon128.png"
     },
-    "default_title": "FIFA Threat Intel - Click to view stats"
+    "default_title": "VAR-Sec - Click to view stats"
   },
   "background": {
     "service_worker": "src/background/service-worker.js",
@@ -46,16 +46,6 @@
       ],
       "js": ["src/content/dom-popup-scanner.js"],
       "run_at": "document_idle"
-    },
-    {
-      "matches": [
-        "*://chatgpt.com/*",
-        "*://*.openai.com/*",
-        "*://gemini.google.com/*",
-        "*://claude.ai/*"
-      ],
-      "js": ["src/content/ai-dlp.js"],
-      "run_at": "document_start"
     }
   ],
   "web_accessible_resources": [
